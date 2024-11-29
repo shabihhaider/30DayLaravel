@@ -21,7 +21,19 @@ Route::get('/', function () {
 
 Route::get('/jobs', function(){
     
-    $jobs = Job::with('employer')->get(); // eager loading the employer relationship to avoid N+1 queries (simple means to avoid multiple queries)
+    /*
+        bash: php artisan vendor:publish --tag=laravel-pagination
+        it will publish the pagination views to resources/views/vendor/pagination
+    */
+
+    /*
+        you can use differnt paginations:
+            1. pagination
+            2. simplePaginate (it will only return the next and previous links)
+            3. cursorPaginate (it is used for "large datasets", it is more efficient than pagination and simplePaginate)
+    */
+
+    $jobs = Job::with('employer')->cursorPaginate(3); // eager loading the employer relationship to avoid N+1 queries (simple means to avoid multiple queries)
     
     return view('jobs', [
         'jobs' => $jobs

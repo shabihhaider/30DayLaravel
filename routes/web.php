@@ -19,7 +19,7 @@ Route::get('/', function () {
     return view('home');
 });
 
-// Route for showing all jobs
+// Index
 Route::get('/jobs', function(){
     
     /*
@@ -42,20 +42,20 @@ Route::get('/jobs', function(){
     ]);
 });
 
-// Route for showing the create job form
+// Create
 Route::get('/jobs/create', function() {
     return view(('jobs.create'));
 });
 
-// Route for showing a single job
-Route::get('/job/{id}', function($id){
+// Show
+Route::get('/jobs/{id}', function($id){
     
     $job = Job::find($id);
   
     return view("jobs.show", ['job' => $job]);
 });
 
-// Route for storing a job
+// Store
 Route::post('/jobs', function() {
     // Validation: https://laravel.com/docs/11.x/validation (go to this link and see the available validation rules)
     request()->validate([
@@ -72,6 +72,47 @@ Route::post('/jobs', function() {
     return redirect('/jobs');
 });
 
+// Edit
+Route::get('/jobs/{id}/edit', function($id){
+    
+    $job = Job::find($id);
+  
+    return view("jobs.edit", ['job' => $job]);
+});
+
+// Update
+Route::patch('/jobs/{id}', function($id){ // patch is used to update the data
+    // validation
+    request()->validate([
+        'title' => ['required', 'min:3'],
+        'salary' => ['required']
+    ]);
+
+    // authorize...
+    
+    // update the job
+    $job = Job::findOrFail($id);
+
+    $job->update([
+        'title' => request('title'),
+        'salary' => request('salary')
+    ]);
+
+    // redirect
+    return redirect('/jobs/' . $job->id);
+});
+
+// Delete
+Route::delete('/jobs/{id}', function($id){ // delete is used to delete the data
+    // authorize...
+
+    // delete the job
+    $job = Job::findOrFail($id);
+    $job->delete();
+
+    // redirect
+    return redirect('/jobs');
+});
 
 Route::get('/contact', function(){
     return view("contact");

@@ -11,8 +11,8 @@ class Job extends Model
 
     protected $table = 'jobs'; // explicitly defining the table name
 
-    protected $fillable = ['title', 'salary']; // explicitly defining the columns that can be filled
-
+    protected $guarded = []; // this means that all fields are mass assignable
+    
     public function employer()
     {
         // this is going to return a relationship type

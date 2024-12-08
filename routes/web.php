@@ -57,7 +57,11 @@ Route::get('/job/{id}', function($id){
 
 // Route for storing a job
 Route::post('/jobs', function() {
-    // Validation...
+    // Validation: https://laravel.com/docs/11.x/validation (go to this link and see the available validation rules)
+    request()->validate([
+        'title' => ['required', 'min:3'],
+        'salary' => ['required']
+    ]);
 
     Job::create([
         'title' => request('title'),

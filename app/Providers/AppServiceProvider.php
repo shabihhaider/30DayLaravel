@@ -26,9 +26,9 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::preventLazyLoading();
 
-        Gate::define('edit-job', function(User $user, Job $job) {
-            // If the user who created the job is not the person who is currently signed in, then you don't have authorization
-            return $job->employer->user->is($user); // $model->is() determine if two models have the same ID and belong to the same table
-        });
+        // Gate::define('edit-job', function(User $user, Job $job) {
+        //     // If the user who created the job is not the person who is currently signed in, then you don't have authorization
+        //     return $job->employer->user->is($user); // $model->is() determine if two models have the same ID and belong to the same table
+        // });
     }
 }

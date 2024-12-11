@@ -56,12 +56,12 @@ class JobController extends Controller
             'employer_id' => 1
         ]);
 
-    return redirect('/jobs');
+        return redirect('/jobs');
     }
 
     public function edit(Job $job)
     {
-
+        // authorize
         Gate::authorize('edit-job', $job); 
 
         return view("jobs.edit", ['job' => $job]);
@@ -69,13 +69,15 @@ class JobController extends Controller
 
     public function update(Job $job)
     {
+        // authorize
+        Gate::authorize('edit-job', $job); 
+
         // validation
         request()->validate([
             'title' => ['required', 'min:3'],
             'salary' => ['required']
         ]);
 
-        // authorize...
         
         // update the job
         $job->update([
@@ -89,7 +91,8 @@ class JobController extends Controller
 
     public function destroy(Job $job)
     {
-        // authorize...
+        // authorize
+        Gate::authorize('edit-job', $job); 
 
         // delete the job
         $job->delete();

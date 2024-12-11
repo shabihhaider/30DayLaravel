@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Job;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class JobController extends Controller
 {
@@ -59,16 +61,8 @@ class JobController extends Controller
 
     public function edit(Job $job)
     {
-        if(Auth::guest())
-        {
-            return redirect('/login');
-        }
 
-        // If the user who created the job is not the person who is currently signed in, then you don't have authorization
-        if($job->employer->user->isNot(Auth::user())) // $model->is() determine if two models have the same ID and belong to the same table
-        {
-            abort(403); // Forbidden
-        }
+        Gate::authorize('edit-job', $job); 
 
         return view("jobs.edit", ['job' => $job]);
     }

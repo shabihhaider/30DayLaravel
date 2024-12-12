@@ -58,7 +58,7 @@ class JobController extends Controller
             'employer_id' => 1
         ]);
 
-        Mail::to($job->employer->user)->send( // Laravel is smart enough to grab the user email automatically
+        Mail::to($job->employer->user)->queue( // Laravel is smart enough to grab the user email automatically
             new JobPosted($job)
         );
 
